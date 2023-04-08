@@ -1,11 +1,59 @@
-import React from 'react';
-import {PageHOC} from '../components'
+import React , {useState } from 'react';
+import { useGlobalContext } from '../context';
+import {PageHOC, CustomInput, CustomButton} from '../components'
+
+
+const handleClick = async () => {
+  try {
+    const playerExists = await contract.isPlayer(walletAddress);
+
+    if (!playerExists) {
+      await contract.registerPlayer(playerName, playerName, { gasLimit: 500000 });
+
+      setShowAlert({
+        status: true,
+        type: 'info',
+        message: `${playerName} is being summoned!`,
+      });
+
+      setTimeout(() => navigate('/create-battle'), 8000);
+    }
+  } catch (error) {
+    alert(error);
+  }
+};
+
+
+
+
+
+
+
+
+
 const Home = () => {
+  const { contract, walletAddress} =useGlobalContext();
+  const [playerName, setPlayerName]=useState('');
   return (
-    <div>
-   
-    </div>
-  )
+   // walletAddress && (
+      <div className="flex flex-col">
+        <CustomInput
+          label="Name"
+          placeHolder="Enter your player name"
+          value={playerName}
+          handleValueChange={setPlayerName}
+
+        />
+
+        <CustomButton
+          title="Register"
+          handleClick = {handleClick}
+          restStyles="mt-6"
+        />
+
+      </div>
+    )
+ // );
 };
 
 export default PageHOC(

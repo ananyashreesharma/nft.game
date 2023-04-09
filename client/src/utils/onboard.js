@@ -24,7 +24,7 @@ async function requestAccount() {
   let currentAccount = 0x0;
 
   if (isEthereum() && getChainID() !== 0) {
-    let accounts = await window.ethereum.request({ method: 'eth_accounts' });
+    let accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
     accounts = await handleConnection(accounts);
     currentAccount = accounts[0];
   }

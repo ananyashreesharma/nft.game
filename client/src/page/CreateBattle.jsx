@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-//import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { PageHOC } from '../components';
 import styles from '../styles';
-//import { useGlobalContext } from '../context';
+import { useGlobalContext } from '../context';
 //import { CustomButton, CustomInput, GameLoad, PageHOC } from '../components';
 
 const CreateBattle = () => {

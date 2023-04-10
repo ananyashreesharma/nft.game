@@ -3,6 +3,7 @@ import React, {createContext, useContext, useEffect, useRef, useState} from "rea
 import {ethers} from 'ethers';
 import Web3Modal from 'web3modal';
 import {useNavigate} from 'react-router-dom';
+import { createEventListeners } from "./createEventListeners";
 
 import {ABI,ADDRESS} from '../contract';
 
@@ -13,6 +14,9 @@ export const GlobalContextProvider = ({children})=>{
     const [contract,setContract]= useState('');
     const [showAlert,setShowAlert]= useState({status: false, type:'info',message:''});
 
+
+    const navigate=useNavigate();
+
   //* Set the wallet address to the state
   const updateCurrentWalletAddress = async () => {
     const accounts = await window?.ethereum?.request({ method: 'eth_requestAccounts' });
@@ -20,6 +24,7 @@ export const GlobalContextProvider = ({children})=>{
     if (accounts) setWalletAddress(accounts[0]);
   };
 
+ 
    useEffect(() => {
     updateCurrentWalletAddress();
 
@@ -41,6 +46,31 @@ export const GlobalContextProvider = ({children})=>{
         return ()=>clearTimeout(timer);
     },[])
 
+
+  //* Activate event listeners for the smart contract
+  useEffect(() => {
+    if ( contract) {
+      createEventListeners({
+        navigate,
+        contract,
+        provider,
+        walletAddress,
+        setShowAlert,
+     
+      });
+    }
+  }, [contract]);
+
+
+
+
+
+
+
+
+
+
+
      //* Handle alerts
   useEffect(() => {
     if (showAlert?.status) {
@@ -51,6 +81,8 @@ export const GlobalContextProvider = ({children})=>{
       return () => clearTimeout(timer);
     }
   }, [showAlert]);
+
+
     
 //   //* Handle error messages
 //   useEffect(() => {

@@ -1,17 +1,51 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { PageHOC } from '../components';
 import styles from '../styles';
 import { useGlobalContext } from '../context';
-//import { CustomButton, CustomInput, GameLoad, PageHOC } from '../components';
+import { CustomButton, CustomInput,  GameLoad, PageHOC } from '../components';
 
 const CreateBattle = () => {
-    return (
-        <div>
-        <h1 className="text-white text-xl">Hello from create battle</h1>
-        </div>
+  const { contract,  battleName, setBattleName, setErrorMessage } = useGlobalContext();
+  const[waitBattle, setWaitBattle]=useState(false);
+  const navigate= useNavigate();
 
-    )
+
+
+    const handleClick = async () => {
+    if (!battleName || battleName.trim() === '') return null;
+
+    try {
+      await contract.createBattle(battleName);
+
+      setWaitBattle(true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+     return (
+    
+    <>
+      {waitBattle && <GameLoad />}
+
+      <div className="flex flex-col mb-5">
+        <CustomInput
+          label="Battle"
+          placeHolder="Enter battle name"
+          value={battleName}
+          handleValueChange={setBattleName}
+        />
+
+        <CustomButton
+          title="Create Battle"
+          handleClick={handleClick}
+          restStyles="mt-6"
+        />
+      </div>
+      <p className={styles.infoText} onClick={() => navigate('/join-battle')}>
+        Or join already existing battles
+      </p>
+    </>
+  );
 };
 //   const { contract, gameData, battleName, setBattleName, setErrorMessage } = useGlobalContext();
 //   const [waitBattle, setWaitBattle] = useState(false);
@@ -25,43 +59,9 @@ const CreateBattle = () => {
 //     }
 //   }, [gameData]);
 
-//   const handleClick = async () => {
-//     if (battleName === '' || battleName.trim() === '') return null;
+ 
 
-//     try {
-//       await contract.createBattle(battleName);
 
-//       setWaitBattle(true);
-//     } catch (error) {
-//       setErrorMessage(error);
-//     }
-//   };
-
-//   return (
-    
-//     <>
-//       {waitBattle && <GameLoad />}
-
-//       <div className="flex flex-col mb-5">
-//         <CustomInput
-//           label="Battle"
-//           placeHolder="Enter battle name"
-//           value={battleName}
-//           handleValueChange={setBattleName}
-//         />
-
-//         <CustomButton
-//           title="Create Battle"
-//           handleClick={handleClick}
-//           restStyles="mt-6"
-//         />
-//       </div>
-//       <p className={styles.infoText} onClick={() => navigate('/join-battle')}>
-//         Or join already existing battles
-//       </p>
-//     </>
-//   );
-// };
 
 export default PageHOC(
   CreateBattle,

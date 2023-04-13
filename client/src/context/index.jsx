@@ -125,7 +125,7 @@ export const GlobalContextProvider = ({children})=>{
 
     return(
         <GlobalContext.Provider value={{
-          contract, walletAddress , showAlert, setShowAlert   
+          contract, walletAddress , showAlert, setShowAlert  , battleName, setBattleName,
                 
 
         }}>

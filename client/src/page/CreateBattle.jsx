@@ -5,10 +5,18 @@ import { useGlobalContext } from '../context';
 import { CustomButton, CustomInput,  GameLoad, PageHOC } from '../components';
 
 const CreateBattle = () => {
-  const { contract,  battleName, setBattleName, setErrorMessage } = useGlobalContext();
+  const { contract,  battleName, setBattleName, gameData } = useGlobalContext();
   const[waitBattle, setWaitBattle]=useState(false);
   const navigate= useNavigate();
 
+    useEffect(() => {
+    // if (gameData?.activeBattle?.battleStatus === 1) {
+    //   navigate(`/battle/${gameData.activeBattle.name}`);
+   // }
+  if (gameData?.activeBattle?.battleStatus === 0) {
+      setWaitBattle(true);
+    }
+  }, [gameData]);
 
 
     const handleClick = async () => {

@@ -59,14 +59,3 @@ const GameLoad = () => {
 
 export default GameLoad;
 
-// import React from 'react'
-
-// const GameLoad = () => {
-//   return (
-//     <div>
-//       hello from game load
-//     </div>
-//   )
-// }
-
-// export default GameLoad

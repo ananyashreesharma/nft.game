@@ -7,28 +7,28 @@ import styles from '../styles';
 
 const JoinBattle = () => {
    const navigate = useNavigate();
-//   const { contract, gameData, setShowAlert, setBattleName, setErrorMessage, walletAddress } = useGlobalContext();
+   const { contract, gameData, setShowAlert, setBattleName,  walletAddress } = useGlobalContext();
 
 //   useEffect(() => {
 //     if (gameData?.activeBattle?.battleStatus === 1) navigate(`/battle/${gameData.activeBattle.name}`);
 //   }, [gameData]);
 
-//   const handleClick = async (battleName) => {
-//     setBattleName(battleName);
+  const handleClick = async (battleName) => {
+    setBattleName(battleName);
 
-//     try {
-//       await contract.joinBattle(battleName);
+    try {
+      await contract.joinBattle(battleName);
 
-//       setShowAlert({ status: true, type: 'success', message: `Joining ${battleName}` });
-//     } catch (error) {
-//       setErrorMessage(error);
-//     }
-//   };
+      setShowAlert({ status: true, type: 'success', message: `Joining ${battleName}` });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <>
       <h2 className={styles.joinHeadText}>Available Battles:</h2>
-{/* 
+
       <div className={styles.joinContainer}>
         {gameData.pendingBattles.length
           ? gameData.pendingBattles
@@ -44,7 +44,7 @@ const JoinBattle = () => {
             )) : (
               <p className={styles.joinLoading}>Reload the page to see new battles</p>
           )}
-      </div> */}
+      </div>
 
       <p className={styles.infoText} onClick={() => navigate('/create-battle')}>
         Or create a new battle

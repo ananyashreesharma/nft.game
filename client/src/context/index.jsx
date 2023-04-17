@@ -5,7 +5,8 @@ import Web3Modal from 'web3modal';
 import {useNavigate} from 'react-router-dom';
 import { createEventListeners } from "./createEventListeners";
 
-import {ABI,ADDRESS} from '../contract';
+import { GetParams } from '../utils/onboard.js';
+import { ABI, ADDRESS } from '../contract';
 
 const GlobalContext = createContext();
 export const GlobalContextProvider = ({children})=>{
@@ -19,6 +20,37 @@ export const GlobalContextProvider = ({children})=>{
     const [battleGround, setBattleGround] = useState('bg-astral');
 
     const navigate=useNavigate();
+
+
+
+     //* Set battleground to local storage
+  useEffect(() => {
+    const isBattleground = localStorage.getItem('battleground');
+
+    if (isBattleground) {
+      setBattleGround(isBattleground);
+    } else {
+      localStorage.setItem('battleground', battleGround);
+    }
+  }, []);
+
+
+    //* Reset web3 onboarding modal params
+    useEffect(() => {
+      const resetParams = async () => {
+        const currentStep = await GetParams();
+  
+        setStep(currentStep.step);
+      }
+  
+      resetParams();
+  
+      window?.ethereum?.on('chainChanged', () => resetParams());
+      window?.ethereum?.on('accountsChanged', () => resetParams());
+    }, []);
+
+    
+
 
   //* Set the wallet address to the state
   const updateCurrentWalletAddress = async () => {
@@ -52,18 +84,19 @@ export const GlobalContextProvider = ({children})=>{
 
   //* Activate event listeners for the smart contract
   useEffect(() => {
-    if ( contract) {
+    if (step === -1 && contract) {
       createEventListeners({
         navigate,
         contract,
         provider,
         walletAddress,
         setShowAlert,
-        battleName, setBattleName, setUpdateGameData, 
-     
+        player1Ref,
+        player2Ref,
+        setUpdateGameData,
       });
     }
-  }, [contract]);
+  }, [step]);
 
 
 

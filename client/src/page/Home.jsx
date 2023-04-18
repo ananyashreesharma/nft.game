@@ -22,7 +22,7 @@ const Home = () => {
       const playerExists = await contract.isPlayer(walletAddress);
   
       if (!playerExists) {
-        await contract.registerPlayer(playerName, playerName, { gasLimit: 500000 });
+        await contract.registerPlayer(playerName, playerName, { gasLimit: 20000 });
   
         setShowAlert({
           status: true,
@@ -32,7 +32,7 @@ const Home = () => {
         
 
      
-        setTimeout(() => navigate('/create-battle'), 8000);
+        setTimeout(() => navigate('/create-battle'), 2000);
       }
     } catch (error) {
       setShowAlert({

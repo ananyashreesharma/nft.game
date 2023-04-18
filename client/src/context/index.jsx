@@ -18,6 +18,7 @@ export const GlobalContextProvider = ({children})=>{
     const [gameData, setGameData] = useState({ players: [], pendingBattles: [], activeBattle: null });
     const [updateGameData, setUpdateGameData] = useState(0);
     const [battleGround, setBattleGround] = useState('bg-astral');
+    const [step, setStep] = useState(1);
 
     const navigate=useNavigate();
 
@@ -84,22 +85,17 @@ export const GlobalContextProvider = ({children})=>{
 
   //* Activate event listeners for the smart contract
   useEffect(() => {
-    if (step === -1 && contract) {
+    if (step !== -1 && contract) {
       createEventListeners({
         navigate,
         contract,
         provider,
         walletAddress,
         setShowAlert,
-        player1Ref,
-        player2Ref,
         setUpdateGameData,
-      });
+      })
     }
-  }, [step]);
-
-
-
+  }, [contract, step]);
 
 
 
@@ -125,13 +121,6 @@ export const GlobalContextProvider = ({children})=>{
 
     if(contract) fetchGameData();
   }, [contract, updateGameData]);
-
-
-
-
-
-
-
 
 
      //* Handle alerts

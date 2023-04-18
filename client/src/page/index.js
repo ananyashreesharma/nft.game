@@ -9,5 +9,5 @@ export {
   Home,
   Battleground,
   CreateBattle,
- JoinBattle,
+  JoinBattle,
 };
